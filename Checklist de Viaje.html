@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///Users/mgl/Downloads/checklist-viaje_1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Viaje</title>
+<link href="./Checklist de Viaje_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --work-bg: linear-gradient(145deg, #0e0e1c 0%, #161630 60%, #0a1020 100%);
+    --work-accent: #5b9cf6;
+    --work-accent2: #3a7bd5;
+    --leisure-bg: linear-gradient(145deg, #071812 0%, #0b2318 60%, #051210 100%);
+    --leisure-accent: #38d97a;
+    --leisure-accent2: #22a85a;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--work-bg);
+    color: #f0efe8;
+    min-height: 100vh;
+    transition: background 0.6s ease;
+    padding-bottom: 80px;
+  }
+
+  body.leisure { background: var(--leisure-bg); }
+
+  /* HEADER */
+  .header {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 0;
+  }
+
+  .label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--work-accent);
+    opacity: 0.8;
+    margin-bottom: 10px;
+    transition: color 0.4s;
+  }
+  body.leisure .label { color: var(--leisure-accent); }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .tab-btn {
+    padding: 8px 22px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 13px;
+    transition: all 0.25s;
+  }
+
+  .tab-btn.active-work {
+    border-color: var(--work-accent);
+    background: rgba(91,156,246,0.12);
+    color: var(--work-accent);
+  }
+
+  .tab-btn.active-leisure {
+    border-color: var(--leisure-accent);
+    background: rgba(56,217,122,0.12);
+    color: var(--leisure-accent);
+  }
+
+  /* PROGRESS */
+  .progress-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label { font-size: 13px; color: rgba(255,255,255,0.55); }
+
+  .progress-pct {
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--work-accent);
+    transition: color 0.4s;
+  }
+  body.leisure .progress-pct { color: var(--leisure-accent); }
+
+  .progress-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--work-accent);
+    border-radius: 10px;
+    transition: width 0.4s ease, background 0.4s;
+  }
+  body.leisure .progress-bar-fill { background: var(--leisure-accent); }
+
+  .ready-msg {
+    text-align: center;
+    font-size: 13px;
+    color: var(--work-accent);
+    margin-top: 10px;
+    display: none;
+  }
+  body.leisure .ready-msg { color: var(--leisure-accent); }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.13);
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-color: rgba(255,255,255,0.25);
+  }
+
+  .reset-btn {
+    margin-left: auto;
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,80,80,0.3);
+    background: transparent;
+    color: rgba(255,100,100,0.6);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: rgba(255,80,80,0.6); color: rgba(255,120,120,0.9); }
+
+  /* SECTIONS */
+  .sections { max-width: 680px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 14px; }
+
+  .section-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: opacity 0.2s;
+  }
+
+  .section-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-title { font-weight: 500; font-size: 15px; }
+  .section-count { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .item:hover { background: rgba(255,255,255,0.04); }
+  .item.done { background: rgba(56,217,122,0.05); }
+  body:not(.leisure) .item.done { background: rgba(91,156,246,0.06); }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.22);
+    background: transparent;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .item.done .checkbox {
+    border: none;
+    background: var(--work-accent);
+  }
+  body.leisure .item.done .checkbox { background: var(--leisure-accent); }
+
+  .checkbox-tick { font-size: 11px; color: #fff; font-weight: bold; display: none; }
+  .item.done .checkbox-tick { display: block; }
+
+  .item-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.4;
+    transition: all 0.2s;
+  }
+  .item.done .item-label {
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="label">Lista de Viaje</p>
+  <h1 id="main-title">💼 Viaje de Trabajo</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active-work" onclick="switchTab(&#39;work&#39;)">💼 Trabajo</button>
+    <button class="tab-btn" onclick="switchTab(&#39;leisure&#39;)">🌴 Placer</button>
+  </div>
+
+  <div class="progress-box">
+    <div class="progress-row">
+      <span class="progress-label" id="progress-label">0 de 61 ítems listos</span>
+      <span class="progress-pct" id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 0%;"></div>
+    </div>
+    <p class="ready-msg" id="ready-msg" style="display: none;">✈️ ¡Todo listo para el viaje!</p>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter(&#39;all&#39;, this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter(&#39;pending&#39;, this)">⏳ Pendientes</button>
+    <button class="filter-btn" onclick="setFilter(&#39;done&#39;, this)">✅ Listos</button>
+    <button class="reset-btn" onclick="resetCurrent()">Resetear</button>
+  </div>
+</div>
+
+<div class="sections" id="sections-container"><div class="section-card"><div class="section-header"><span class="section-title">💻 Tecnología</span><span class="section-count">0/10</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Notebook / laptop</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cargador de notebook + cable</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Tablet (opcional)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Mouse portátil</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Auriculares con micrófono</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cargador de celular</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cable USB / USB-C</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Power bank</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Disco externo o USB</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Adaptador de corriente internacional</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">📄 Documentos y Finanzas</span><span class="section-count">0/10</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">DNI / Pasaporte vigente</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Visa (si aplica)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Tarjeta de crédito / débito</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Efectivo en moneda local</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Tarjeta de embarque (impresa o digital)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Reservas de hotel confirmadas</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Seguro de viaje</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Datos de contacto de emergencia</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Foto digital de documentos guardada en la nube (Drive / iCloud)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— Al exterior: Notificar al banco antes de viajar</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">👔 Vestimenta</span><span class="section-count">0/9</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Camisas formales (1 por día + 1 extra)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Pantalones de vestir</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cinturón formal</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Zapatos de vestir</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Medias formales</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Ropa interior (1 por día + 1 extra)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Ropa para dormir</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Ropa casual para after-office</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Abrigo / campera (según clima)</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">🧴 Higiene y Salud</span><span class="section-count">0/10</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cepillo y pasta de dientes</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Hilo dental / enjuague bucal</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Desodorante</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Shampoo / acondicionador (tamaño viaje)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Afeitadora / crema de afeitar</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Perfume</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Protector solar</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Medicamentos habituales</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Analgésicos / antigripales</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Protector estomacal</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">📋 Organización</span><span class="section-count">0/5</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Agenda o cuaderno</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Lapicera</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Bolsas organizadoras para valija</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Candado para valija</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Información del cliente / reunión</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">📅 Antes de salir</span><span class="section-count">0/14</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Agendar el viaje y copiar a quien corresponda</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Confirmar traslado al aeropuerto (remis / quién lleva)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Avisar itinerario completo a alguien de confianza</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Verificar fecha y hora de salida (ida)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Verificar fecha y hora de llegada (ida)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Verificar fecha y hora de salida (vuelta)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Verificar fecha y hora de llegada (vuelta)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cargar millas / programa de viajero frecuente</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Web check-in (abre 24-48hs antes del vuelo)</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— En auto: Póliza de seguro vigente</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— En auto: Cédula verde</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— En auto: Registro de conducir al día</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— En auto: Presión de neumáticos</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">— En auto al exterior: Póliza internacional</span>
+      </div></div><div class="section-card"><div class="section-header"><span class="section-title">🏠 Casa antes de irse</span><span class="section-count">0/3</span></div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Cerrar gas, ventanas y puertas</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Dejar llave a alguien de confianza</span>
+      </div><div class="item">
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">Pausar delivery / suscripciones si aplica</span>
+      </div></div></div>
+
+<script>
+const data = {
+  work: {
+    title: "💼 Viaje de Trabajo",
+    sections: [
+      { title: "💻 Tecnología", items: [
+        "Notebook / laptop",
+        "Cargador de notebook + cable",
+        "Tablet (opcional)",
+        "Mouse portátil",
+        "Auriculares con micrófono",
+        "Cargador de celular",
+        "Cable USB / USB-C",
+        "Power bank",
+        "Disco externo o USB",
+        "Adaptador de corriente internacional",
+      ]},
+      { title: "📄 Documentos y Finanzas", items: [
+        "DNI / Pasaporte vigente",
+        "Visa (si aplica)",
+        "Tarjeta de crédito / débito",
+        "Efectivo en moneda local",
+        "Tarjeta de embarque (impresa o digital)",
+        "Reservas de hotel confirmadas",
+        "Seguro de viaje",
+        "Datos de contacto de emergencia",
+        "Foto digital de documentos guardada en la nube (Drive / iCloud)",
+        "— Al exterior: Notificar al banco antes de viajar",
+      ]},
+      { title: "👔 Vestimenta", items: [
+        "Camisas formales (1 por día + 1 extra)",
+        "Pantalones de vestir",
+        "Cinturón formal",
+        "Zapatos de vestir",
+        "Medias formales",
+        "Ropa interior (1 por día + 1 extra)",
+        "Ropa para dormir",
+        "Ropa casual para after-office",
+        "Abrigo / campera (según clima)",
+      ]},
+      { title: "🧴 Higiene y Salud", items: [
+        "Cepillo y pasta de dientes",
+        "Hilo dental / enjuague bucal",
+        "Desodorante",
+        "Shampoo / acondicionador (tamaño viaje)",
+        "Afeitadora / crema de afeitar",
+        "Perfume",
+        "Protector solar",
+        "Medicamentos habituales",
+        "Analgésicos / antigripales",
+        "Protector estomacal",
+      ]},
+      { title: "📋 Organización", items: [
+        "Agenda o cuaderno",
+        "Lapicera",
+        "Bolsas organizadoras para valija",
+        "Candado para valija",
+        "Información del cliente / reunión",
+      ]},
+      { title: "📅 Antes de salir", items: [
+        "Agendar el viaje y copiar a quien corresponda",
+        "Confirmar traslado al aeropuerto (remis / quién lleva)",
+        "Avisar itinerario completo a alguien de confianza",
+        "Verificar fecha y hora de salida (ida)",
+        "Verificar fecha y hora de llegada (ida)",
+        "Verificar fecha y hora de salida (vuelta)",
+        "Verificar fecha y hora de llegada (vuelta)",
+        "Cargar millas / programa de viajero frecuente",
+        "Web check-in (abre 24-48hs antes del vuelo)",
+        "— En auto: Póliza de seguro vigente",
+        "— En auto: Cédula verde",
+        "— En auto: Registro de conducir al día",
+        "— En auto: Presión de neumáticos",
+        "— En auto al exterior: Póliza internacional",
+      ]},
+      { title: "🏠 Casa antes de irse", items: [
+        "Cerrar gas, ventanas y puertas",
+        "Dejar llave a alguien de confianza",
+        "Pausar delivery / suscripciones si aplica",
+      ]},
+    ]
+  },
+  leisure: {
+    title: "🌴 Viaje de Placer",
+    sections: [
+      { title: "📱 Tecnología", items: [
+        "Celular + cargador",
+        "Auriculares",
+        "Power bank",
+        "Cámara de fotos (opcional)",
+        "Tablet / e-reader (opcional)",
+        "Adaptador de corriente internacional",
+        "Cable USB / USB-C",
+      ]},
+      { title: "📄 Documentos y Finanzas", items: [
+        "DNI / Pasaporte vigente",
+        "Visa (si aplica)",
+        "Tarjeta de crédito / débito",
+        "Efectivo en moneda local",
+        "Tarjeta de embarque (impresa o digital)",
+        "Reservas de hotel / Airbnb",
+        "Seguro de viaje",
+        "Vouchers de actividades (si aplica)",
+        "Foto digital de documentos guardada en la nube (Drive / iCloud)",
+        "— Al exterior: Notificar al banco antes de viajar",
+      ]},
+      { title: "👕 Vestimenta", items: [
+        "Remeras / camisetas (1 por día + 1 extra)",
+        "Pantalones / shorts",
+        "Ropa interior (1 por día + 1 extra)",
+        "Ropa para dormir",
+        "Zapatillas cómodas",
+        "Sandalias / ojotas",
+        "Traje de baño (x2 si hay playa/piscina)",
+        "Abrigo / campera (según destino)",
+        "Gorro / visera",
+        "1 outfit más arreglado para salir a cenar",
+      ]},
+      { title: "🧴 Higiene y Salud", items: [
+        "Cepillo y pasta de dientes",
+        "Hilo dental / enjuague bucal",
+        "Desodorante",
+        "Shampoo / acondicionador",
+        "Protector solar (factor alto)",
+        "Repelente de mosquitos (si aplica)",
+        "Medicamentos habituales",
+        "Analgésicos / antigripales",
+        "Botiquín básico (curitas, alcohol)",
+        "Pastillas antimareo (si aplica)",
+      ]},
+      { title: "🏖️ Actividades y Extras", items: [
+        "Toalla de playa / microfibra",
+        "Gafas de sol",
+        "Snorkel (si aplica)",
+        "Bolsa waterproof para celular",
+        "Mochila de día",
+        "Guía de viaje / itinerario",
+      ]},
+      { title: "📅 Antes de salir", items: [
+        "Agendar el viaje y copiar a quien corresponda",
+        "Confirmar traslado al aeropuerto (remis / quién lleva)",
+        "Avisar itinerario completo a alguien de confianza",
+        "Verificar fecha y hora de salida (ida)",
+        "Verificar fecha y hora de llegada (ida)",
+        "Verificar fecha y hora de salida (vuelta)",
+        "Verificar fecha y hora de llegada (vuelta)",
+        "Cargar millas / programa de viajero frecuente",
+        "Web check-in (abre 24-48hs antes del vuelo)",
+        "— En auto: Póliza de seguro vigente",
+        "— En auto: Cédula verde",
+        "— En auto: Registro de conducir al día",
+        "— En auto: Presión de neumáticos",
+        "— En auto al exterior: Póliza internacional",
+      ]},
+      { title: "🏠 Casa antes de irse", items: [
+        "Cerrar gas, ventanas y puertas",
+        "Dejar llave a alguien de confianza",
+        "Pausar delivery / suscripciones si aplica",
+        "🐾 Confirmar quién se queda con Benjie",
+        "🐾 Dejar comida, agua y accesorios de Benjie listos",
+        "🐾 Avisar al cuidador rutinas y datos del veterinario",
+      ]},
+    ]
+  }
+};
+
+let currentTab = 'work';
+let filter = 'all';
+let checked = {};
+
+function key(tab, section, item) {
+  return `${tab}||${section}||${item}`;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.body.className = tab === 'leisure' ? 'leisure' : '';
+  document.getElementById('main-title').textContent = data[tab].title;
+
+  const btns = document.querySelectorAll('.tab-btn');
+  btns[0].className = 'tab-btn' + (tab === 'work' ? ' active-work' : '');
+  btns[1].className = 'tab-btn' + (tab === 'leisure' ? ' active-leisure' : '');
+
+  render();
+}
+
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function resetCurrent() {
+  const tab = data[currentTab];
+  tab.sections.forEach(s => s.items.forEach(item => {
+    delete checked[key(currentTab, s.title, item)];
+  }));
+  render();
+}
+
+function toggleItem(tab, section, item) {
+  const k = key(tab, section, item);
+  checked[k] = !checked[k];
+  render();
+}
+
+function updateProgress() {
+  const tab = data[currentTab];
+  let total = 0, done = 0;
+  tab.sections.forEach(s => s.items.forEach(item => {
+    total++;
+    if (checked[key(currentTab, s.title, item)]) done++;
+  }));
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progress-label').textContent = `${done} de ${total} ítems listos`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('ready-msg').style.display = pct === 100 ? 'block' : 'none';
+}
+
+function render() {
+  updateProgress();
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+
+  const tab = data[currentTab];
+  tab.sections.forEach(section => {
+    const filteredItems = section.items.filter(item => {
+      const isDone = !!checked[key(currentTab, section.title, item)];
+      if (filter === 'pending') return !isDone;
+      if (filter === 'done') return isDone;
+      return true;
+    });
+
+    if (filteredItems.length === 0) return;
+
+    const totalInSection = section.items.length;
+    const doneInSection = section.items.filter(i => checked[key(currentTab, section.title, i)]).length;
+
+    const card = document.createElement('div');
+    card.className = 'section-card';
+
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = `<span class="section-title">${section.title}</span><span class="section-count">${doneInSection}/${totalInSection}</span>`;
+    card.appendChild(header);
+
+    filteredItems.forEach(item => {
+      const isDone = !!checked[key(currentTab, section.title, item)];
+      const div = document.createElement('div');
+      div.className = 'item' + (isDone ? ' done' : '');
+      div.innerHTML = `
+        <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+        <span class="item-label">${item}</span>
+      `;
+      div.onclick = () => toggleItem(currentTab, section.title, item);
+      card.appendChild(div);
+    });
+
+    container.appendChild(card);
+  });
+}
+
+render();
+</script>
+
+
+</body></html>
